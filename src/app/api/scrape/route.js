@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import chromium from "@sparticuz/chromium";
-import puppeteer from "puppeteer-core";
+// import puppeteer from "puppeteer-core";
+import puppeteer from "puppeteer";
 
 export async function POST(req) {
 	const { url } = await req.json();
@@ -12,10 +13,15 @@ export async function POST(req) {
 	let browser;
 	try {
 		browser = await puppeteer.launch({
-			args: chromium.args,
-			executablePath: await chromium.executablePath(),
-			headless: chromium.headless,
+			headless: true,
+			args: ["--no-sandbox", "--disable-setuid-sandbox"],
 		});
+
+		// browser = await puppeteer.launch({
+		// 	args: chromium.args,
+		// 	executablePath: await chromium.executablePath(),
+		// 	headless: chromium.headless,
+		// });
 
 		const page = await browser.newPage();
 		await page.goto(url, { waitUntil: "domcontentloaded" });

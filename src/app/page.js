@@ -5,6 +5,7 @@ export default function Home() {
 	const [url, setUrl] = useState("");
 	const [result, setResult] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [googleLoading, setGoogleLoading] = useState(false);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -22,6 +23,23 @@ export default function Home() {
 		}
 		setLoading(false);
 	};
+	const handleSave = async () => {
+		setGoogleLoading(true);
+
+		try {
+			const response = await fetch("/api/google", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ data:result }),
+			});
+
+			const data = await response.json();
+			// console.log(data);
+		} catch (error) {
+			console.log(error);
+		}
+		setGoogleLoading(false);
+	};
 
 	return (
 		<div style={{ padding: "20px" }}>
@@ -36,6 +54,9 @@ export default function Home() {
 				/>
 				<button type="submit" disabled={loading}>
 					{loading ? "Scraping..." : "Scrape"}
+				</button>
+				<button type="button" onClick={handleSave} disabled={googleLoading}>
+					{googleLoading ? "Saving to Google Sheets..." : "Save to Google Sheets"}
 				</button>
 			</form>
 

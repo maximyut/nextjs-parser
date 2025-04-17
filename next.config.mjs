@@ -5,4 +5,8 @@ const nextConfig = {
 		serverComponentsExternalPackages: ["puppeteer-core", "@sparticuz/chromium"],
 	},
 };
+
+
+
+
 export default nextConfig;
